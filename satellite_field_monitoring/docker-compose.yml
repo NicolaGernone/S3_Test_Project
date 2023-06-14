@@ -4,6 +4,7 @@ services:
     build: 
       context: .
       dockerfile: docker/Dockerfile
+    command: python satellite_field_monitoring/main.py
     env_file:
       - .env
     volumes:
