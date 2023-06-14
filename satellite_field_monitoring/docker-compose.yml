@@ -7,5 +7,8 @@ services:
       - API_KEY=${API_KEY}
       - BUCKET_NAME=${BUCKET_NAME}
       - FIELDS_CSV=${FIELDS_CSV}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
     volumes:
       - .:/app
