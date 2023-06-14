@@ -8,6 +8,11 @@ packages = [{include = "satellite_field_monitoring"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+requests = "^2.31.0"
+pandas = "^2.0.2"
+boto3 = "^1.26.153"
+moto = "^4.1.11"
+pytest = "^7.3.2"
 
 
 [build-system]
