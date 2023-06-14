@@ -1,0 +1,11 @@
+version: '3'
+services:
+  app:
+    build: .
+    environment:
+      - DATE=${DATE}
+      - API_KEY=${API_KEY}
+      - BUCKET_NAME=${BUCKET_NAME}
+      - FIELDS_CSV=${FIELDS_CSV}
+    volumes:
+      - .:/app
