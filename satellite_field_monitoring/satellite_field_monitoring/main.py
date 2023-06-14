@@ -1,4 +1,4 @@
-from satellite_field_monitoring.satellite import S3Services
+from satellite_field_monitoring.services.satellite import S3Services
 
 def main():
     # Initialize a FieldMonitor instance
