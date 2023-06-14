@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "satellite-field-monitoring"
+version = "0.1.0"
+description = ""
+authors = ["Nicola Gernone <nicola.gernone02@gmail.com>"]
+readme = "README.md"
+packages = [{include = "satellite_field_monitoring"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
