@@ -1,27 +1,41 @@
+from unittest.mock import MagicMock
+import uuid
+
 import pytest
-import boto3
-from moto import mock_s3
 
-from satellite_field_monitoring.services.satellite import S3Services
+from src.services.satellite import S3Services
 
 
-@pytest.fixture
-def mock_env_variables(monkeypatch):
-    # Mocking environment variables
-    monkeypatch.setenv('AWS_SERVICE_NAME', 's3')
-    monkeypatch.setenv('API_KEY', 'your_api_key')
-    monkeypatch.setenv('NASA_URL', 'http://example.com')
-    monkeypatch.setenv('BUCKET_NAME', 'test_bucket')
-    monkeypatch.setenv('CSV_URL', 'path_to_your_test_csv')
-    monkeypatch.setenv('FIELDS_CSV', 'field_id,date,lat,lon,dim')
+class FakeResponse:
+    def __init__(self, *args, **kwargs):
+        self.iter_content = iter([b'test_image_data'])
+        
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        pass
 
 @pytest.fixture
-def field_monitor(mock_env_variables):
-    return S3Services.FieldMonitor()
+def field_monitor():
+    fields_csv = 'field_id,date,lat,lon,dim'
+    api_key = 'test_api_key'
+    nasa_url = 'https://api.nasa.gov/planetary/earth/imagery'
+    bucket_name = 'test_bucket'
+    s3_client = MagicMock()
+    csv_file = 'fields.csv'
+    use_mock_s3 = True
+
+    return S3Services.FieldMonitor(fields_csv, api_key, nasa_url, bucket_name, s3_client, csv_file, use_mock_s3)
 
 @pytest.fixture
-def mock_s3_service():
-    with mock_s3():
-        conn = boto3.resource('s3', region_name='us-east-1')
-        conn.create_bucket(Bucket="test_bucket")
-        yield conn
+def mock_response():
+    return FakeResponse()
+
+@pytest.fixture
+def mock_os(mocker):
+    mocker.patch('os.remove')
+    
+@pytest.fixture
+def generate_unique_bucket_name():
+    return f"test-bucket-{uuid.uuid4()}"
