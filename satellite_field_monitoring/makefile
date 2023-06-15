@@ -12,4 +12,4 @@ test: build
 down:
 	docker-compose down
 
-run: build run
+run: build up

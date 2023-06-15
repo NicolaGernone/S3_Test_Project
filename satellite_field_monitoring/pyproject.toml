@@ -3,7 +3,6 @@ name = "src"
 version = "0.1.0"
 description = ""
 authors = ["Nicola Gernone <nicola.gernone02@gmail.com>"]
-readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
