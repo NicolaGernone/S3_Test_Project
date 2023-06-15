@@ -6,7 +6,7 @@ build:
 run:
 	docker-compose up
 
-test:
+test: build
 	docker-compose run app poetry run pytest
 
 down:

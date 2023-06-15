@@ -1,16 +1,21 @@
+import logging
 import os
 from contextlib import nullcontext
 from dataclasses import dataclass, field
 from io import BytesIO
 from multiprocessing import Pool
-from typing import Optional
 
 import boto3
 import pandas as pd
 import requests
+from decouple import config
 from moto import mock_s3
 
-media_root = os.getenv('MEDIA_ROOT')
+media_root = config('MEDIA_ROOT')
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class S3Services:
@@ -21,16 +26,17 @@ class S3Services:
 
         Contains all necessary parameters and AWS S3 client for the operations.
         """
-        fields_csv: Optional[list] = field(default_factory=lambda: os.getenv('FIELDS_CSV').split(','))
-        api_key: str = field(default_factory=lambda: os.getenv('API_KEY'))
-        nasa_url: str = field(default_factory=lambda: os.getenv('NASA_URL'))
-        bucket_name: str = field(default_factory=lambda: os.getenv('BUCKET_NAME'))
-        s3_client: boto3.client = field(default_factory=lambda: boto3.client(os.getenv('AWS_SERVICE_NAME')) if not bool(os.getenv('USE_MOCK_S3')) else mock_s3())
-        csv_file: str = field(default_factory=lambda: os.getenv('CSV_URL'))
+        fields_csv: list = field(default_factory=lambda: config('FIELDS_CSV').split(','))
+        api_key: str = field(default_factory=lambda: config('API_KEY'))
+        nasa_url: str = field(default_factory=lambda: config('NASA_URL'))
+        bucket_name: str = field(default_factory=lambda: config('BUCKET_NAME'))
+        s3_client: boto3.client = field(default_factory=lambda: boto3.client(config('AWS_SERVICE_NAME')) if not bool(config('USE_MOCK_S3')) else mock_s3())
+        csv_file: str = field(default_factory=lambda: config('CSV_URL'))
+        use_mock_s3: bool = field(default_factory=lambda: bool(config('USE_MOCK_S3')))
         
         
         def __post_init__(self):
-            mandatory_fields = ['api_key', 'nasa_url', 'bucket_name', 'csv_file', 's3_client']
+            mandatory_fields = ['fields_csv', 'api_key', 'nasa_url', 'bucket_name', 's3_client', 'csv_file', 'use_mock_s3']
             for field_name in mandatory_fields:
                 if getattr(self, field_name) is None:
                     raise ValueError(f"{field_name} is mandatory.")
@@ -54,9 +60,9 @@ class S3Services:
                 response.raise_for_status()
                 image_path = S3Services.create_image_path(field_id, fields['date'])
                 S3Services.upload_image(field_monitor, response, image_path)
-            print(f"Image for field {field_id} uploaded successfully.")
+            logger.info(f"Image for field {field_id} uploaded successfully.")
         except requests.exceptions.RequestException as e:
-            print(f"Error in getting image for field {field_id} with error {str(e)}")
+            logger.error(f"Error in getting image for field {field_id} with error {str(e)}")
             raise
 
     @staticmethod
@@ -82,7 +88,7 @@ class S3Services:
             for chunk in response.iter_content(chunk_size=8192):
                 file_obj.write(chunk)
             file_obj.seek(0)
-            if not bool(os.getenv('USE_MOCK_S3')):
+            if not field_monitor.use_mock_s3:
                 field_monitor.s3_client.upload_fileobj(file_obj, field_monitor.bucket_name, image_path)
             else:
                 # Save the image to a local file
@@ -99,22 +105,22 @@ class S3Services:
             field_monitor (FieldMonitor): An instance of FieldMonitor data class.
 
         Raises:
-            Exception: If there's any error in monitoring the fields.
+            ValueError: If there's any error in monitoring the fields.
         """
         try:
             with S3Services.get_context(field_monitor):
                 fields = S3Services.load_fields_from_csv(field_monitor)
                 S3Services.process_fields_async(field_monitor, fields)
 
-            print('Monitoring fields completed successfully.')
-        except Exception as e:
-            print(f"An error occurred while monitoring fields: {e}")
+            logger.info('Monitoring fields completed successfully.')
+        except ValueError as e:
+            logger.error(f"An error occurred while monitoring fields: {e}")
             raise
 
     @staticmethod
     def get_context(field_monitor: FieldMonitor):
         """Get the context for S3 operations."""
-        if not bool(os.getenv('USE_MOCK_S3')):
+        if not field_monitor.use_mock_s3:
             field_monitor.s3_client.create_bucket(Bucket=field_monitor.bucket_name)
             return nullcontext()
         else:
@@ -130,5 +136,3 @@ class S3Services:
         """Process fields asynchronously."""
         with Pool() as pool:
             pool.starmap(S3Services.get_image, [(field_monitor, field) for field in fields])
-
-
