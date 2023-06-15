@@ -11,3 +11,5 @@ test:
 
 down:
 	docker-compose down
+
+init: build run
