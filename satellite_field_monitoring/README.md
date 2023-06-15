@@ -17,11 +17,15 @@ These environment variables should be set in a `.env` file in the project root o
 
 The other variables are alreeady set with default values in the `.env` file.
 
+A `field.csv` is already provided in the project root. It contains the list of fields to monitor. The fields are identified by a unique id, a name, a latitude and a longitude.
+
+If you want to use your own list of fields, you can cahnge the `CSV_URL` variable in the `.env` file pointing to your csv.
+
 ## Setup
 
 1. Clone the repository.
 2. Navigate into the project directory.
-3. Create a `.env` file copying the `env.exaple` and filling the missing data.
+3. Create a `.env` file copying the `env.exaple` and filling the missing data as specified in the Requirements above.
 
 ## Usage
 
