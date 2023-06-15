@@ -3,7 +3,7 @@
 build:
 	docker-compose build
 
-run:
+up:
 	docker-compose up
 
 test: build
@@ -12,4 +12,4 @@ test: build
 down:
 	docker-compose down
 
-init: build run
+run: build run
