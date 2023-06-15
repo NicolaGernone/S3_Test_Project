@@ -1,13 +1,21 @@
 [tool.poetry]
-name = "satellite-field-monitoring"
+name = "src"
 version = "0.1.0"
 description = ""
 authors = ["Nicola Gernone <nicola.gernone02@gmail.com>"]
 readme = "README.md"
-packages = [{include = "satellite_field_monitoring"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+requests = "^2.31.0"
+pandas = "^2.0.2"
+boto3 = "^1.26.153"
+moto = "^4.1.11"
+pytest = "^7.3.2"
+requests-mock = "^1.11.0"
+python-decouple = "^3.8"
+pytest-mock = "^3.10.0"
 
 
 [build-system]

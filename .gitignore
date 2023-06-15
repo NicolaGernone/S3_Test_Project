@@ -1,0 +1,7 @@
+satellite_field_monitoring/satellite_field_monitoring/__pycache__/satellite.cpython-311.pyc
+satellite_field_monitoring/satellite_field_monitoring/__pycache__/__init__.cpython-311.pyc
+satellite_field_monitoring/satellite_field_monitoring/services/__pycache__/satellite.cpython-311.pyc
+satellite_field_monitoring/tests/__pycache__/__init__.cpython-311.pyc
+.gitignore
+satellite_field_monitoring/tests/__pycache__/test_satellite.cpython-311-pytest-7.3.2.pyc
+.gitignore
