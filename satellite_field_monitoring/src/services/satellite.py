@@ -4,6 +4,7 @@ from contextlib import nullcontext
 from dataclasses import dataclass, field
 from io import BytesIO
 from multiprocessing import Pool
+import tempfile
 
 import boto3
 import pandas as pd
@@ -162,3 +163,18 @@ class S3Services:
         """Process fields asynchronously."""
         with Pool() as pool:
             pool.starmap(S3Services.get_image, [(field_monitor, field) for field in fields])
+    
+    @staticmethod        
+    def download_from_s3(s3_url: str) -> str:
+        # Parse the S3 URL
+        bucket_name = s3_url.split('/')[2]
+        key = '/'.join(s3_url.split('/')[3:])
+
+        # Create a temporary file
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+
+        # Download the file from S3
+        s3 = boto3.client('s3')
+        s3.download_file(bucket_name, key, temp_file.name)
+        
+        return temp_file.name
