@@ -53,9 +53,7 @@ You can use the included Makefile to build and run the Docker container. The fol
 
 2. Amazon S3: After retrieving the image, the Lambda function would then upload it to an Amazon S3 bucket. S3 (Simple Storage Service) is an object storage service that      offers industry-leading scalability, data availability, security, and performance.
 
-3. Amazon CloudWatch Events: To ensure this process happens on a daily basis, you could use Amazon CloudWatch Events (recently rebranded as Amazon EventBridge). You would    set up a rule to trigger your Lambda function every 24 hours.
+3. Amazon CloudWatch Events: To ensure this process happens on a daily basis, is needed Amazon EventBridge.
 
-4. IAM Role: You'll need an IAM role with the necessary permissions attached to the Lambda function. This role would need permissions to access the S3 bucket (to store      the image) and to execute the Lambda function.
+4. IAM Role: Needed with the necessary permissions attached to the Lambda function. This role would need permissions to access the S3 bucket (to store the image) and to execute the Lambda function.
 
-## Arquitecture Schema
-![Alt text](arc.png)
