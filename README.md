@@ -57,3 +57,5 @@ You can use the included Makefile to build and run the Docker container. The fol
 
 4. IAM Role: Needed with the necessary permissions attached to the Lambda function. This role would need permissions to access the S3 bucket (to store the image) and to execute the Lambda function.
 
+![Alt text](arc.png)
+
