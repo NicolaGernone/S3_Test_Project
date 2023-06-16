@@ -26,6 +26,7 @@ If you want to use your own list of fields, you can cahnge the `CSV_URL` variabl
 1. Clone the repository.
 2. Navigate into the project directory.
 3. Create a `.env` file copying the `env.exaple` and filling the missing data as specified in the Requirements above.
+4. Go to [satellite_field_monitoring](satellite_field_monitoring) using this command `cd satellite_field_monitoring`.
 
 ## Usage
 
