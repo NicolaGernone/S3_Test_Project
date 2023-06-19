@@ -1,36 +1,42 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim
+# Start with a base image containing Python runtime
+FROM continuumio/miniconda3
 
-# Set the working directory in the container to /app
+# Set the working directory in the Docker image
 WORKDIR /app
 
-# Add the GDAL dependencies
-RUN apt-get update && apt-get install -y \
-    libgdal-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Copy the current directory contents into the container at /app
+ADD . /app
 
-# Define environment variable you need for CPLUS_INCLUDE_PATH
-ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
-ENV C_INCLUDE_PATH=/usr/include/gdal
+# Create the environment:
+COPY environment.yml .
+
+# Install mamba
+RUN conda install mamba -c conda-forge
+
+# Use mamba to create the environment
+RUN mamba env create -f environment.yml
+
+# Make RUN commands use the new environment:
+SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 
 # Install poetry
-RUN pip install poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
-# Project initialization (copy only necessary files):
-COPY poetry.lock pyproject.toml ./
+# Add poetry to PATH
+ENV PATH="${PATH}:/root/.poetry/bin"
 
-# Disabling virtual env creation by poetry (poetry will use the system python3)
-RUN poetry config virtualenvs.create false
+# Copy poetry lock files
+COPY pyproject.toml poetry.lock* ./
 
-# Project initialization (install dependencies):
-RUN poetry install --no-interaction --no-ansi
+# Install dependencies
+RUN poetry install --no-root --no-dev
 
+# Confirm gdal installation
+RUN gdalinfo --version
 
-# The application is bind-mounted from the host, no need to COPY
-# However, if you'd like to build a standalone image, uncomment the next line:
-# COPY . /app
+# Make sure the environment is activated:
+RUN echo "Make sure gdal is installed:"
+RUN gdal-config --version
 
-# The command to run the application is provided by docker-compose, no need for CMD
-# However, if you'd like to build a standalone image, uncomment the next line:
-# CMD ["python", "main.py"]
+# The command that will run when the container is started:
+CMD ["python", "main.py"]

@@ -16,7 +16,6 @@ requests-mock = "^1.11.0"
 python-decouple = "^3.8"
 pytest-mock = "^3.10.0"
 numpy = "^1.24.3"
-GDAL = { version = "3.6.4", optional = true }
 
 
 [build-system]
