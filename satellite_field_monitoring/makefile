@@ -19,7 +19,7 @@ env:
 	conda activate env
 
 update_env:
-	conda update env
+	conda env update --file environment.yml
 
 run: build up
 

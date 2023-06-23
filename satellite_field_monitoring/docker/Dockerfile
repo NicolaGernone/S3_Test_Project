@@ -26,4 +26,4 @@ SHELL ["conda", "run", "-n", "env", "/bin/bash", "-c"]
 RUN conda init bash && exec bash
 
 # Run the command to start your application
-CMD ["python", "/app/src/scripts.py"]
+CMD ["python", "/src/main.py"]
