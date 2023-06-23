@@ -1,0 +1,8 @@
+name: env
+channels:
+  - defaults
+dependencies:
+  - python=3.11  # adjust according to your Python version
+  - gdal
+  - pip:
+    - -r requirements.txt # assuming you have a requirements.txt file for your Python dependencies

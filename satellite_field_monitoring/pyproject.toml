@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "src"
+name = "SatelliteImageRetriever"
 version = "0.1.0"
-description = ""
+description = "Application to retrieve images from nasa url and calculate ndvi"
 authors = ["Nicola Gernone <nicola.gernone02@gmail.com>"]
-packages = [{include = "src"}]
+
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -15,6 +15,7 @@ pytest = "^7.3.2"
 requests-mock = "^1.11.0"
 python-decouple = "^3.8"
 pytest-mock = "^3.10.0"
+numpy = "^1.24.3"
 
 
 [build-system]

@@ -1,0 +1,2 @@
+NDVI value: 0.06720813437865057
+NDVI interpretation: No vegetation is present. This could be due to recently harvested crop or a fallow period.
