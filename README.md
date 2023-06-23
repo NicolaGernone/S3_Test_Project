@@ -26,6 +26,7 @@ If you want to use your own list of fields, you can cahnge the `CSV_URL` variabl
 1. Clone the repository.
 2. Navigate into the project directory.
 3. Create a `.env` file copying the `env.exaple` and filling the missing data as specified in the Requirements above.
+4. Go to [satellite_field_monitoring](satellite_field_monitoring) using this command `cd satellite_field_monitoring`.
 
 ## Usage
 
@@ -45,3 +46,16 @@ You can use the included Makefile to build and run the Docker container. The fol
 * `make test`: Run the tests in the Docker container.
 * `make down`: Remove the Docker container.
 * `make run`: Build and run the Docker container.
+
+# Cloud Arquitecture
+
+1. AWS Lambda: This is the core of the architecture. it use a Python-based AWS Lambda function to download the image from the external URL. Lambda is a serverless     computing service that runs your code in response to events and automatically manages the underlying compute resources for you.
+
+2. Amazon S3: After retrieving the image, the Lambda function would then upload it to an Amazon S3 bucket. S3 (Simple Storage Service) is an object storage service that      offers industry-leading scalability, data availability, security, and performance.
+
+3. Amazon CloudWatch Events: To ensure this process happens on a daily basis, is needed Amazon EventBridge. Here you can set a signal to run the Lambda every 24h for example.
+
+4. IAM Role: Needed with the necessary permissions attached to the Lambda function. This role would need permissions to access the S3 bucket (to store the image) and to execute the Lambda function.
+
+![Alt text](arc.png)
+
