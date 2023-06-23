@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from decimal import Decimal
 
-import gdal
+from osgeo import gdal
 from decouple import config
 
 from services.satellite import S3Services

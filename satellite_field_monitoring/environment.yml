@@ -3,7 +3,15 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - python=3.7
+  - python=3.11
   - gdal
   - pandas
   - pip
+  - boto3
+  - requests
+  - moto
+  - pytest
+  - requests-mock
+  - python-decouple
+  - pytest-mock
+  - numpy

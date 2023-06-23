@@ -19,24 +19,15 @@ RUN mamba env create -f environment.yml
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 
-# Install poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
-
-# Add poetry to PATH
-ENV PATH="${PATH}:/root/.poetry/bin"
-
-# Copy poetry lock files
-COPY pyproject.toml poetry.lock* ./
-
-# Install dependencies
-RUN poetry install --no-root --no-dev
-
 # Confirm gdal installation
 RUN gdalinfo --version
 
 # Make sure the environment is activated:
-RUN echo "Make sure gdal is installed:"
 RUN gdal-config --version
 
+# Set PYTHONPATH
+ENV PYTHONPATH="/app/miniconda3/envs/myenv/lib/python3.11/site-packages:${PYTHONPATH}"
+
+
 # The command that will run when the container is started:
-CMD ["python", "main.py"]
+# CMD ["python", "main.py"]

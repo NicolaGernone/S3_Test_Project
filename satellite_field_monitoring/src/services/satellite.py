@@ -1,10 +1,10 @@
 import logging
 import os
+import tempfile
 from contextlib import nullcontext
 from dataclasses import dataclass, field
 from io import BytesIO
 from multiprocessing import Pool
-import tempfile
 
 import boto3
 import pandas as pd
