@@ -12,3 +12,4 @@ satellite_field_monitoring/tests/__pycache__/conftest.cpython-311-pytest-7.3.2.p
 satellite_field_monitoring/src/services/__pycache__/ndvi.cpython-311.pyc
 satellite_field_monitoring/src/__pycache__/__init__.cpython-311.pyc
 satellite_field_monitoring/docker/Dockerfile
+satellite_field_monitoring/src/services/__pycache__/satellite.cpython-310.pyc

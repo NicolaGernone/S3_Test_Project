@@ -1,17 +1,8 @@
-name: myenv
+name: env
 channels:
   - defaults
-  - conda-forge
 dependencies:
-  - python=3.11
+  - python=3.11  # adjust according to your Python version
   - gdal
-  - pandas
-  - pip
-  - boto3
-  - requests
-  - moto
-  - pytest
-  - requests-mock
-  - python-decouple
-  - pytest-mock
-  - numpy
+  - pip:
+    - -r requirements.txt # assuming you have a requirements.txt file for your Python dependencies

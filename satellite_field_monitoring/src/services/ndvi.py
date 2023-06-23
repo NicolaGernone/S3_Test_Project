@@ -17,7 +17,7 @@ class NDVIServices:
         output_file: str = field(default_factory=lambda: config('REPORT_PATH'))
 
     @staticmethod
-    def calculate_ndvi(image_path) -> Decimal:
+    def calculate_ndvi(image_path: str) -> Decimal:
         # Check if the image_path is an S3 URL
         if image_path.startswith('s3://'):
             image_path = S3Services.download_from_s3(image_path)

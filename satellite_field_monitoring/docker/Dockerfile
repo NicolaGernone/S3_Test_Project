@@ -1,33 +1,29 @@
-# Start with a base image containing Python runtime
+# Start with a base image containing Miniconda3
 FROM continuumio/miniconda3
 
-# Set the working directory in the Docker image
+# Set the working directory in the container to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Add the current directory contents into the container at /app
 ADD . /app
 
-# Create the environment:
-COPY environment.yml .
+# Set the environment variables for the conda environment
+ENV PATH /opt/conda/envs/env/bin:$PATH
 
 # Install mamba
-RUN conda install mamba -c conda-forge
+RUN conda install -c conda-forge mamba
 
-# Use mamba to create the environment
+# Create a conda environment using the environment.yml file and make sure that all necessary python packages are installed
 RUN mamba env create -f environment.yml
 
-# Make RUN commands use the new environment:
-SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
+# Activate the environment
+RUN echo "source activate env" > ~/.bashrc
 
-# Confirm gdal installation
-RUN gdalinfo --version
+# Make RUN commands use the new environment
+SHELL ["conda", "run", "-n", "env", "/bin/bash", "-c"]
 
-# Make sure the environment is activated:
-RUN gdal-config --version
+# Ensure that the python and conda packages are available to the metadata
+RUN conda init bash && exec bash
 
-# Set PYTHONPATH
-ENV PYTHONPATH="/app/miniconda3/envs/myenv/lib/python3.11/site-packages:${PYTHONPATH}"
-
-
-# The command that will run when the container is started:
-# CMD ["python", "main.py"]
+# Run the command to start your application
+CMD ["python", "/app/src/scripts.py"]
